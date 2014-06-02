@@ -83,7 +83,9 @@ int toShort(int value, short int *target)
  * \param jnum    integer value represents the joint id, and it is updated at the end of the function
  * \return 0 if reaches to last joint index; 1 elsewise
  */
-int loop_over_joints(struct robot_device* device0, struct mechanism*& _mech, struct DOF*& _joint, int& mechnum, int& jnum)
+int loop_over_joints(struct robot_device* device0,
+                     struct mechanism*& _mech,
+                     struct DOF*& _joint, int& mechnum, int& jnum)
 {
     // Initialize iterators
     if (_mech == NULL || _joint == NULL)
@@ -116,6 +118,7 @@ int loop_over_joints(struct robot_device* device0, struct mechanism*& _mech, str
 
     return 1;
 }
+
 
 /**\fn loop_over_joints(struct mechanism* _mech, struct DOF*& _joint, int& jnum)
  * \brief Iterate over all joints of one mechanism.
@@ -165,9 +168,11 @@ int loop_over_joints(struct mechanism* _mech, struct DOF*& _joint, int& jnum)
  * \param _joint a DOF struct 
  * \return 1 if the joint is a toolDOF;elsewise 0
  */
-int is_toolDOF(struct DOF *_joint){
+int is_toolDOF(struct DOF *_joint)
+{
     return is_toolDOF(_joint->type);
 }
+
 
 /**\fn int is_toolDOF(int jointType)
  * \brief check if the current joint is a toolDOF
@@ -210,7 +215,6 @@ int tools_ready(struct mechanism *mech)
 
     return 1;
 }
-
 
 
 /**\fn int robot_ready(struct robot_device* device0)
@@ -279,6 +283,8 @@ void strtoken(char *str, char *result, char delim)
  * \param src - the source string
  * \param dest - the resulting string
  * \return void
+ *  Either need to remove this and replace it with string.h strcpy
+ *  Both need to be checked for overflow.
  */
 void strcopy(const char *src, char *dest)
 {
@@ -294,15 +300,14 @@ void strcopy(const char *src, char *dest)
 }
 
 
-
 /**\fn struct  timespec  tsSubtract ( struct  timespec  time1, struct  timespec  time2)
  * \brief function to get time interval
  * \param time1 - struct  timespec
  * \param time2 - struct  timespec
  * \return time1-time2  or  (0,0) if time2>time1
  */
-struct  timespec  tsSubtract ( struct  timespec  time1,
-                                           struct  timespec  time2)
+struct timespec tsSubtract(struct  timespec  time1,
+                           struct  timespec  time2)
 {
     struct  timespec  result ;
 
@@ -328,7 +333,6 @@ struct  timespec  tsSubtract ( struct  timespec  time1,
     }
     return (result);
 }
-
 
 
 /**\fn void getQuaternion(float* Q, float mat[3][3])
@@ -357,7 +361,8 @@ void getQuaternion(float* Q, float mat[3][3])
  */
 void set_posd_to_pos(struct robot_device* device0)
 {
-    for (int m = 0; m < NUM_MECH; m++) {
+    for (int m = 0; m < NUM_MECH; m++)
+    {
         device0->mech[m].pos_d.x     = device0->mech[m].pos.x;
         device0->mech[m].pos_d.y     = device0->mech[m].pos.y;
         device0->mech[m].pos_d.z     = device0->mech[m].pos.z;
@@ -369,7 +374,5 @@ void set_posd_to_pos(struct robot_device* device0)
         for (int k = 0; k < 3; k++)
           for (int j = 0; j < 3; j++)
               device0->mech[m].ori_d.R[k][j] = device0->mech[m].ori.R[k][j];
-
-
     }
 }
