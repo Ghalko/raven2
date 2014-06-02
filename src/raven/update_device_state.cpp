@@ -41,7 +41,8 @@ t_controlmode newRobotControlMode = homing_mode;
  * \param device0           pointer to device informaiton
  *
  */
-int updateDeviceState(struct param_pass *currParams, struct param_pass *rcvdParams, struct device *device0)
+int updateDeviceState(struct param_pass *currParams, struct param_pass *rcvdParams,
+		      struct device *device0)
 {
 	currParams->last_sequence = rcvdParams->last_sequence;
     for (int i = 0; i < NUM_MECH; i++)
@@ -64,7 +65,6 @@ int updateDeviceState(struct param_pass *currParams, struct param_pass *rcvdPara
             device0->mech[i].pos_d.y = rcvdParams->xd[i].y;
             device0->mech[i].pos_d.z = rcvdParams->xd[i].z;
             device0->mech[i].ori_d.grasp  = rcvdParams->rd[i].grasp;
-
 
             for (int j=0;j<3;j++)
                 for (int k=0;k<3;k++)
@@ -109,7 +109,8 @@ int updateDeviceState(struct param_pass *currParams, struct param_pass *rcvdPara
 *       Change controller mode, i.e. position control, velocity control, visual servoing, etc
 *   \param t_controlmode    current control mode.
 */
-void setRobotControlMode(t_controlmode in_controlMode){
+void setRobotControlMode(t_controlmode in_controlMode)
+{
     log_msg("Robot control mode: %d",in_controlMode);
     newRobotControlMode = in_controlMode;
     isUpdated = TRUE;
@@ -123,7 +124,8 @@ void setRobotControlMode(t_controlmode in_controlMode){
 *   \param in_dof       DOF number
 *   \param in_torque    Torque to set the DOF to (in mNm)
 */
-void setDofTorque(unsigned int in_mech, unsigned int in_dof, int in_torque){
+void setDofTorque(unsigned int in_mech, unsigned int in_dof, int in_torque)
+{
     if (    ((int)in_mech < NUM_MECH)        &&
             ((int)in_dof  < MAX_DOF_PER_MECH) )
     {
