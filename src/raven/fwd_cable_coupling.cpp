@@ -31,6 +31,7 @@
 extern struct DOF_type DOF_types[];
 extern int NUM_MECH;
 
+
 /**
 * \fn void fwdCableCoupling(struct device *device0, int runlevel)
 * \brief Calls fwdMechCableCoupling for each mechanism in device
@@ -39,7 +40,6 @@ extern int NUM_MECH;
 * \return void
 * \todo Remove runlevel from args.
 */
-
 void fwdCableCoupling(struct device *device0, int runlevel)
 {
 	//Run fwd cable coupling for each mechanism.
@@ -48,12 +48,12 @@ void fwdCableCoupling(struct device *device0, int runlevel)
 		fwdMechCableCoupling(&(device0->mech[i]));
 }
 
+
 /**
 * \fn void fwdMechCableCoupling(struct mechanism *mech)
 * \param mech
 * \return void
 */
-
 void fwdMechCableCoupling(struct mechanism *mech)
 {
 	float th1, th2, th3, th5, th6, th7;
@@ -132,7 +132,7 @@ void fwdMechCableCoupling(struct mechanism *mech)
 	else if (mech->tool_type == dv_adapter)
 	{
 		int sgn = (mech->type != GOLD_ARM) ? 1 : -1; //original
-//		int sgn = (mech->type == GOLD_ARM) ? 1 : -1;
+		//int sgn = (mech->type == GOLD_ARM) ? 1 : -1;
 		th3 = (1.0/tr3) * (m3 - sgn*m4/GB_RATIO);
 		th5 = (1.0/tr5) * (m5 - sgn*m4/GB_RATIO);
 		th6 = (1.0/tr6) * (m6 - sgn*m4/GB_RATIO) - th5/2;
@@ -194,8 +194,6 @@ void fwdMechCableCoupling(struct mechanism *mech)
 }
 
 
-
-
 /**
 * \fn void fwdTorqueCoupling(struct device *device0, int runlevel)
 * \brief Calls fwdMechTorqueCoupling for each mechanism in device
@@ -204,7 +202,6 @@ void fwdMechCableCoupling(struct mechanism *mech)
 * \return void
 * \todo Remove runlevel from args.
 */
-
 void fwdTorqueCoupling(struct device *device0, int runlevel)
 {
 	//Run fwd cable coupling for each mechanism.
@@ -213,12 +210,12 @@ void fwdTorqueCoupling(struct device *device0, int runlevel)
 		fwdMechTorqueCoupling(&(device0->mech[i]));
 }
 
+
 /**
 * \fn void fwdMechTorqueCoupling(struct mechanism *mech)
 * \param mech
 * \return void
 */
-
 void fwdMechTorqueCoupling(struct mechanism *mech)
 {
 	float th1=0, th2=0, th3=0, th5=0, th6=0, th7=0;
