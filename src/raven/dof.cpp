@@ -51,7 +51,8 @@ int processEncVal(unsigned char buffer[], int channel)
            (buffer[3*channel+3]);
 
   //Handle negative values by padding result with ones
-  if (result >> 23) {
+  if (result >> 23)
+  {
     result = result | 0xFF000000;
   }
 #ifdef RAVEN_I
@@ -61,8 +62,10 @@ int processEncVal(unsigned char buffer[], int channel)
 #endif
 }
 
+
 /**
- * encToMPos - converts an encoder count to motor position. This function sets the mpos parameter of the joint structure
+ * encToMPos - converts an encoder count to motor position. This
+ *   function sets the mpos parameter of the joint structure
  *
  * \param joint pointer to degree of freedom to work on
  *
@@ -75,7 +78,9 @@ void encToMPos(struct DOF *joint)
 
 
 /**
-* Similar returns an angle corresponding to encoder value contained in joint parameter. Function normalizes values so that they are returned measured from start position
+* Similar returns an angle corresponding to encoder value contained in
+*   joint parameter. Function normalizes values so that they are returned
+*   measured from start position
 *  \param joint Pointer to structure containing joint info
 *  \return angle of the encoder
 */
@@ -93,6 +98,7 @@ float encToMPos2(struct DOF *joint)
   //MPos is just the motor angle
   return motorAngle;
 }
+
 
 /**
  * normalizeEncCnt - adjusts encVal based on middle pos.
