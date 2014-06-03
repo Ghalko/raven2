@@ -76,24 +76,6 @@ int raven_homing(struct device *device0, struct param_pass *currParams, int begi
     struct mechanism* _mech = NULL;
     int i=0,j=0;
 
-
-#ifdef RICKS_TOOLS      // Refers to Enders Game Prop manager!!
-                        //  these were wooden dummy tools for the movie.
-    _mech = NULL;  _joint = NULL;
-
-    while (loop_over_joints(device0, _mech, _joint, i,j) )
-    {
-       if (is_toolDOF(_joint))
-         {
-    	   _joint->state = jstate_ready;
-        }
-    }
-#endif
-
-
-
-
-
     // Only run in init mode
     if ( ! (currParams->runlevel == RL_INIT && currParams->sublevel == SL_AUTO_INIT ))
     {
@@ -191,9 +173,7 @@ int raven_homing(struct device *device0, struct param_pass *currParams, int begi
                 }
             }
         }
-
     }
-
     return 0;
 }
 
@@ -262,32 +242,28 @@ int set_joints_known_pos(struct mechanism* _mech, int tool_only)
         float f_enc_val = _joint->enc_val;
 
         // Encoder values on Gold arm are reversed.  See also state_machine.cpp
-    switch (_mech->tool_type){
-		case dv_adapter:
-			if ( _mech->type == GOLD_ARM && !is_toolDOF(_joint))
+		    switch (_mech->tool_type)
+		    {
+					case dv_adapter:
+						if ( _mech->type == GOLD_ARM && !is_toolDOF(_joint))
+							f_enc_val *= -1.0;
+						break;
+					case RII_square_type:
+						//Green arm tools are also reversed with square pattern
+						if (( _mech->type == GOLD_ARM && !is_toolDOF(_joint) ) ||
+				    		( _mech->type == GREEN_ARM && is_toolDOF(_joint) )) 
+					  	f_enc_val *= -1.0;
+						break;
+					default:
+						if ( _mech->type == GOLD_ARM || is_toolDOF(_joint) )
+							f_enc_val *= -1.0;
+						break;
+					//Needs a true default/error state
+		    }
 
-				f_enc_val *= -1.0;
-			break;
-		case RII_square_type:
-			if (	( _mech->type == GOLD_ARM && !is_toolDOF(_joint) )
-			    	||
-			    	( _mech->type == GREEN_ARM && is_toolDOF(_joint) ) //Green arm tools are also reversed with square pattern
-			    )
-			    f_enc_val *= -1.0;
-			break;
-		default:
-			if ( _mech->type == GOLD_ARM || is_toolDOF(_joint) )
-				f_enc_val *= -1.0;
-			break;
-    }
-
-
-
-
-        /// Set the joint offset in encoder space.
+     /// Set the joint offset in encoder space.
         float cc = ENC_CNTS_PER_REV / (2*M_PI);
         _joint->enc_offset = f_enc_val - (_joint->mpos_d * cc);
-
 
         getStateLPF(_joint, _mech->tool_type);
     }
